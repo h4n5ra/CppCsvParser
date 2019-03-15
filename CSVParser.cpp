@@ -1,4 +1,4 @@
-#include "Parser.h"
+#include "CSVParser.h"
 #include "Logger.h"
 #include <iostream>
 #include <fstream>
@@ -8,13 +8,13 @@
 using namespace std;
 
 
-Parser::Parser() {
+CSVParser::CSVParser() {
     
     logger.info("Created Parser");
     
 }
 
-void Parser::read_csv(string filename){
+void CSVParser::print_csv(string filename){
     filename = filename+".csv";
     logger.info("Reading from"+filename);
     ifstream file(filename);
@@ -35,4 +35,6 @@ void Parser::read_csv(string filename){
     file.close();
 
 }
+
+
 

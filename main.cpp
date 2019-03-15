@@ -1,9 +1,9 @@
-#include "Parser.h"
+#include "CSVParser.h"
 
 int main(int argc, char** argv) {
     
-    Parser p;
-    p.read_csv("test");
+    CSVParser p;
+    p.print_csv("test");
 
     return 0;
 }
