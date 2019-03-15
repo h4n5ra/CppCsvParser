@@ -9,7 +9,7 @@
 
 using namespace std;
 
-
+//TODO: Implement header reading
 CSVParser::CSVParser() {
     
     logger.info("Created Parser");
@@ -54,9 +54,9 @@ map<string, vector<string>> CSVParser::to_map(string filename){
         getline(ss,name,',');
         getline(ss,age,',');
         getline(ss,weight,'\n');
-        map["Name"].push_back(name);
-        map["Age"].push_back(age);
-        map["Weight"].push_back(weight);
+        map["Name"].push_back(remove_r(name));
+        map["Age"].push_back(remove_r(age));
+        map["Weight"].push_back(remove_r(weight));
         counter++;
         logger.info("Successfully mapped line "+to_string(counter));
     }
@@ -64,10 +64,11 @@ map<string, vector<string>> CSVParser::to_map(string filename){
     return map;
 }
 
+//TODO: Fix incorrect order of printing data. Maps are iterated alphabetically
 void CSVParser::print_map(map<string, vector<string>> map){
     logger.info("Printing saved map of CSV file");
     for (auto t : map){
-        cout << t.first << endl;
+        cout << t.first << " :: ";
         cout << "[";
         for (auto i : t.second){
             cout << i << ", ";
@@ -75,4 +76,12 @@ void CSVParser::print_map(map<string, vector<string>> map){
         cout << "]"<< endl;
     }
     logger.info("Finished printing map of CSV file");
+}
+
+string CSVParser::remove_r(std::string s){
+    if(!s.empty() && s[s.size() - 1] == '\r'){
+        return s.substr(0, s.size()-1);
+    } else {
+        return s;
+    }
 }

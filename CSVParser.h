@@ -12,7 +12,8 @@ public:
     std::map<std::string,std::vector<std::string>> to_map(std::string filename);
     void print_map(std::map<std::string, std::vector<std::string>> map);
     Logger logger = Logger("csv_parser");
-
+private:
+    std::string remove_r(std::string s);
 };
 
 #endif
