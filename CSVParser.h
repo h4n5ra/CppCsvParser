@@ -14,6 +14,7 @@ public:
     Logger logger = Logger("csv_parser");
 private:
     std::string remove_r(std::string s);
+    vector<string> get_header(std::string filename);
 };
 
 #endif

@@ -22,6 +22,7 @@ void CSVParser::print_csv(string filename){
     ifstream file(filename);
     string name, age, weight, line;
     int counter = 0;
+    
     while(getline(file,line)){
         stringstream ss(line);
         getline(ss,name,',');
@@ -38,28 +39,53 @@ void CSVParser::print_csv(string filename){
 
 }
 
+vector<string> CSVParser::get_header(std::string filename){
+  ifstream file(filename);
+  string header, heading;
+  vector<string> headers;
+  
+  logger.info("Reading from "+filename+".csv");
+  if (file.good()){
+    getline(file, header);
+    header = remove_r(header);
+    logger.info("Got header from "+filename+".csv");
+  }
+  logger.info("Parsing header into headings");
+  logger.info("HEADER: "+header);
+  stringstream ss(header);
+  while(getline(ss, heading, ',')){
+      headers.push_back(heading);
+  }
+  file.close();
+  return headers;
+}
+
 map<string, vector<string>> CSVParser::to_map(string filename){
     filename = filename+".csv";
     logger.info("Reading from "+filename);
     ifstream file(filename);
-    string name, age, weight, line;
-    map<string, vector<string>> map{
-        {"Name",{}},
-        {"Age",{}},
-        {"Weight",{}}
-    };
+    string line;
+    map<string, vector<string>> map{};
+    vector<string> header = get_header(filename);
     int counter = 0;
+    bool skip_header = true;
+//    string name, age, weight;
+    
     while(getline(file,line)){
-        stringstream ss(line);
-        getline(ss,name,',');
-        getline(ss,age,',');
-        getline(ss,weight,'\n');
-        map["Name"].push_back(remove_r(name));
-        map["Age"].push_back(remove_r(age));
-        map["Weight"].push_back(remove_r(weight));
-        counter++;
-        logger.info("Successfully mapped line "+to_string(counter));
+        if (skip_header == false){
+            stringstream ss(line);
+            string entry;
+            for (int i = 0; i < header.size(); i++){
+                getline(ss, entry, ',');
+                map[header[i]].push_back(remove_r(entry));
+            }
+            counter++;
+            logger.info("Successfully mapped line "+to_string(counter));
+        }else{
+            skip_header = false;
+        }
     }
+    file.close();
     
     return map;
 }
